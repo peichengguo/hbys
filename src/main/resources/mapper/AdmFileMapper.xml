@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbys.dao.AdmFileDAO">
+            
+	<insert id="insertAdmFile" parameterType="FileVo" useGeneratedKeys="true" keyProperty="id">
+         insert into t_adm_file(file_name,file_size,file_url,time,state)
+         values
+         (
+         #{fileName},
+         #{fileSize},
+         #{fileUrl},
+         #{time},
+         #{state})
+	</insert>
+    
+    <select id="selectFileVoById" parameterType="String" resultType="FileVo">
+        select id,file_name as fileName,
+         file_size as fileSize,file_url as fileUrl,time as time,state as state
+		 from t_adm_file where t_adm_file.id = #{id}
+    </select>
+    
+    <select id="selectAllFileVo" parameterType="FileVo" resultType="FileVo">
+        select id,file_name as fileName,
+         file_size as fileSize,file_url as fileUrl,time as time,state as state
+		 from t_adm_file
+		 <where>
+		 	<if test="fileName != null">
+		 		file_name like CONCAT(CONCAT('%',#{fileName}),'%') 
+		 	</if>
+		 </where>
+		 limit 0,50
+    </select>
+    
+    <update id="updateFileVo" parameterType="FileVo" >
+        update t_adm_file set state=#{state}
+        where id=#{id}
+    </update>
+</mapper>

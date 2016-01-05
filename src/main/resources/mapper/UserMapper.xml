@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbys.dao.UserDAO">
+            
+	<insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+         insert into user(iphone,name,address,specialty,password,state)
+         values
+         (
+         #{iphone},
+         #{name},
+         #{address},
+         #{specialty},
+         #{password},
+         #{state})
+	</insert>
+    
+    <select id="selectUserByIphone" parameterType="String" resultType="User">
+        select * from user where user.iphone = #{iphone}
+    </select>
+
+    <select id="selectUserById" parameterType="Long" resultType="String">
+        select password from user where user.id = #{id}
+    </select>
+    
+    <select id="selectAllUser" parameterType="SearchObject" resultType="User">
+        select * from user
+        <where>
+        	user.state &lt;= #{state}
+        	<if test="name != null and name != ''">
+        		and user.name like CONCAT(CONCAT('%',#{name}),'%') 
+        	</if>
+        	<if test="iphone != null and iphone != ''">
+        		and user.iphone like CONCAT(CONCAT('%',#{iphone}),'%') 
+        	</if>
+        </where>
+        limit #{startNum},#{showNum};
+    </select>
+
+    <select id="selectAllUserCount" parameterType="SearchObject" resultType="Integer">
+        select count(0) from user
+        <where>
+            user.state &lt;= #{state}
+            <if test="name != null and name != ''">
+                and user.name like CONCAT(CONCAT('%',#{name}),'%')
+            </if>
+            <if test="iphone != null and iphone != ''">
+                and user.iphone like CONCAT(CONCAT('%',#{iphone}),'%')
+            </if>
+        </where>
+    </select>
+    
+    <update id="updateUser" parameterType="User" >
+        update user set iphone=#{iphone},name=#{name},address=#{address},specialty=#{specialty},sex=#{sex},brith=#{brith},carNo=#{carNo},
+        workAddress=#{workAddress},beforeWork=#{beforeWork},currPay=#{currPay},hopePay=#{hopePay},hopeWork=#{hopeWork},hopeCity=#{hopeCity},
+        workHistory=#{workHistory},workLimit=#{workLimit},state=#{state}
+        where id=#{id}
+    </update>
+    
+    <update id="updateRoleAdm" parameterType="map">
+    	update user set state=#{state}
+        where id in
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+        	#{item}
+        </foreach>
+    </update>
+    
+    <update id="updatePass" parameterType="map">
+    	update user set password=#{password}
+        where id = #{id}
+    </update>
+    
+</mapper>

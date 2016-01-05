@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbys.dao.AdmPicDAO">
+            
+	<insert id="insertAdmPic" parameterType="AdmPicVo" useGeneratedKeys="true" keyProperty="id">
+         insert into t_adm_pic(pic_type,src_url,liti_url,pic_desc,upload_time,state)
+         values
+         (
+         #{picType},
+         #{srcUrl},
+         #{litiUrl},
+         #{picDesc},
+         #{uploadTime},
+         #{state})
+	</insert>
+    
+    <select id="selectAdmPicById" parameterType="String" resultType="AdmPicVo">
+        select id,pic_type as picType,
+         src_url as srcUrl,liti_url as litiUrl,pic_desc as picDesc,upload_time as uploadTime,state as state
+		 from t_adm_pic where t_adm_pic.id = #{id}
+    </select>
+    
+    <select id="selectAllAdmPic" parameterType="AdmPicVo" resultType="AdmPicVo">
+        select id,pic_type as picType,
+         src_url as srcUrl,liti_url as litiUrl,pic_desc as picDesc,upload_time as uploadTime,state as state
+		 from t_adm_pic
+		 <where>
+		 	<if test="picType != null">
+		 		pic_type = #{picType}
+		 	</if>
+		 </where>
+		 limit 0,60;
+    </select>
+    
+    <update id="updateAdmPic" parameterType="AdmPicVo" >
+        update t_adm_pic set state=#{state},src_url=#{srcUrl},liti_url=#{litiUrl},pic_desc=#{picDesc},pic_type=#{picType},upload_time=#{uploadTime}
+        where id=#{id}
+    </update>
+</mapper>

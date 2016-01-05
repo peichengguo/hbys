@@ -1,0 +1,15 @@
+.error{
+	width:600px;height: 300px;margin: 0px auto;
+	background-color: #425958; color:#fff;font-family:"宋体";
+	text-align: center; 
+}
+
+.error :FIRST-CHILD{
+	font-size: 22px;
+	height:150px;line-height: 150px;
+}
+
+.error :last-child{
+	font-size: 22px;
+	height:150px;
+}

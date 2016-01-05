@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbys.dao.ArticleInfoDAO">
+
+    <!-- 保存文章 -->
+	<insert id="insertArticleInfo" parameterType="ArticleInfoVo" useGeneratedKeys="true" keyProperty="id">
+         insert into t_article_info(u_id,u_name,title,type,create_time,update_time,read_num,state)
+         values
+         (
+         #{userId},
+         #{userName},
+         #{title},
+         #{type},
+         #{createTime},
+         #{updateTime},
+         #{readNum},
+         #{state})
+	</insert>
+
+    <!-- 保存文章内容 -->
+    <select id="insertArticleContent" parameterType="ArticleContentVo">
+        insert into t_article_content(article_id,article_content)
+         values
+         (
+         #{id},
+         #{content}
+    </select>
+
+    <!-- 查询文章信息 -->
+    <select id="selectArticleInfoById" parameterType="Long" resultType="ArticleInfoVo">
+        select id,u_id as userId,u_name as userName,title,type,
+        create_time as createTime,update_time as updateTime,read_num as readNum,state
+        from t_article_info where id = #{id}
+    </select>
+
+    <!-- 查询文章内容 -->
+    <select id="selectArticleContentById" parameterType="Long" resultType="ArticleContentVo">
+        select article_id as id,article_content as content
+        from t_article_content where article_id = #{id}
+    </select>
+
+    <!-- 查询文章信息列表 -->
+    <select id="selectAllArticleInfo" parameterType="SearchObject" resultType="ArticleInfoVo">
+        select id,u_id as userId,u_name as userName,title,type,
+        create_time as createTime,update_time as updateTime,read_num as readNum,state
+        from t_article_info
+        <where>
+            t_article_info.state = #{state}
+            <if test="title != null and title != ''">
+                and t_article_info.title like CONCAT(CONCAT('%',#{title}),'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询文章信息列表总数 -->
+    <select id="selectAllArticleInfoCount" parameterType="SearchObject" resultType="Integer">
+        select count(0) from t_article_info
+        <where>
+            t_article_info.state = #{state}
+            <if test="title != null and title != ''">
+                and t_article_info.title like CONCAT(CONCAT('%',#{title}),'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 更新文章信息 -->
+    <update id="updateArticleInfo" parameterType="ArticleInfoVo" >
+        update t_article_info set u_id=#{userId},
+        u_name=#{userName},
+        title=#{title},
+        type=#{type},
+        --create_time=#{createTime},
+        update_time=#{updateTime},
+        read_num=#{readNum},
+        state=#{state}
+        where id=#{id}
+    </update>
+
+    <!-- 更新文章内容 -->
+    <update id="updateArticleContent" parameterType="ArticleContentVo" >
+        update t_article_content set article_content=#{content}
+        where article_id=#{id}
+    </update>
+    
+
+</mapper>

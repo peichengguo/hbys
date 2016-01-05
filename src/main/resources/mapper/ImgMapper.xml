@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbys.dao.ImgDAO">
+            
+	<insert id="insertImg" parameterType="ImgVo" useGeneratedKeys="true" keyProperty="id">
+         insert into t_img(u_id,img_url,img_desc,img_liti_url,img_time,img_state)
+         values
+         (
+         #{uId},
+         #{imgUrl},
+         #{imgDesc},
+         #{imgLitiUrl},
+         #{imgTime},
+         #{imgState})
+	</insert>
+    
+    <select id="selectImgByUserId" parameterType="String" resultType="ImgVo">
+        select id,u_id as uId,
+         img_url as imgUrl,img_desc as imgDesc,img_liti_url as imgLitiUrl,img_time as imgTime,img_state as imgState
+		 from t_img where t_img.u_id = #{uid}
+    </select>
+    
+    <update id="updateImg" parameterType="ImgVo" >
+        update t_img set img_url=#{imgUrl},img_desc=#{imgDesc},img_liti_url=#{imgLitiUrl},img_time=#{imgTime},img_state=#{imgState}
+        where id=#{id}
+    </update>
+</mapper>
