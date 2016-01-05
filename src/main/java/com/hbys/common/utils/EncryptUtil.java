@@ -7,12 +7,12 @@ import java.io.UnsupportedEncodingException;
 
 
 /**
- * <B>系统名称：</B>案管系统<BR>
+ * <B>系统名称：</B><BR>
  * <B>模块名称：</B>公共模块<BR>
  * <B>中文类名：</B>加密解密工具类<BR>
  * <B>概要说明：</B>加密解密工具类<BR>
  * 
- * @author 中科软科技 魏涛
+ * @author cg.pei
  * @since 2011-04-02
  */
 public class EncryptUtil {
